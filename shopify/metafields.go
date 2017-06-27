@@ -2,6 +2,7 @@ package shopify
 
 import (
 	"context"
+
 	"fmt"
 	"net/http"
 	"time"
@@ -24,6 +25,15 @@ type Metafield struct {
 	Value         *string    `json:"value"`
 	ValueType     *string    `json:"value_type,omitempty"`
 	OwnerResource *string    `json:"owner_resource,omitempty"`
+}
+
+type ProductForUpdateContainer struct {
+	Product ProductForUpdate `json:"product"`
+}
+
+type ProductForUpdate struct {
+	Id         int          `json:"id"`
+	Metafields []*Metafield `json:"metafields"`
 }
 
 type MetafieldListOptions struct {
@@ -56,4 +66,25 @@ func (p *MetafieldsService) ListByProduct(ctx context.Context, productId int, op
 	}
 
 	return metafieldList.Metafields, resp, nil
+}
+
+func (p *MetafieldsService) UpdateByProduct(ctx context.Context, productId int, metafields []*Metafield) (*http.Response, error) {
+	u := fmt.Sprintf("products/%d.json", productId)
+
+	product := ProductForUpdateContainer{
+		Product: ProductForUpdate{productId, metafields},
+	}
+
+	req, err := p.client.NewRequest("PUT", u, product)
+
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := p.client.Do(ctx, req, nil)
+	if err != nil {
+		return resp, err
+	}
+
+	return resp, nil
 }
