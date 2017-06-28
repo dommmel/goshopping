@@ -55,28 +55,11 @@ func NewPrivateClient(httpClient *http.Client, apiKey string, password string, s
 	return c
 }
 
-// addOptions adds the parameters in opt as URL query parameters to s. opt
+// addOptionsWithDefaults adds the parameters in opt as URL query parameters to s. opt
 // must be a struct whose fields may contain "url" tags.
+// It also adds a url parameter "limit" of value "250"
 
 func addOptionsWithDefaults(s string, opt interface{}) (string, error) {
-
-	// Max out the number of item per response
-	defaultOptions := struct {
-		Limit string `url:"limit"`
-	}{"250"}
-
-	s, derr := addOptions(s, defaultOptions)
-	if derr != nil {
-		return s, derr
-	}
-	s, err := addOptions(s, opt)
-	if err != nil {
-		return s, err
-	}
-	return s, nil
-}
-
-func addOptions(s string, opt interface{}) (string, error) {
 
 	v := reflect.ValueOf(opt)
 	if v.Kind() == reflect.Ptr && v.IsNil() {
@@ -92,7 +75,8 @@ func addOptions(s string, opt interface{}) (string, error) {
 	if err != nil {
 		return s, err
 	}
-
+	// Add Default
+	qs.Add("limit", "250")
 	u.RawQuery = qs.Encode()
 	return u.String(), nil
 }
