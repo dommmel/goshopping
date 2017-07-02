@@ -76,7 +76,7 @@ type Image struct {
 type ProductListOptions struct {
 	Ids          []int     `url:"ids,comma,omitempty"`
 	SinceId      int       `url:"since_id,omitempty"`
-	Title        string    `url:"vendor,omitempty"`
+	Title        string    `url:"title,omitempty"`
 	Vendor       string    `url:"vendor,omitempty"`
 	Handle       string    `url:"handle,omitempty"`
 	ProductType  string    `url:"product_type,omitempty"`
