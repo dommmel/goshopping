@@ -17,7 +17,7 @@ import (
 	"github.com/google/go-querystring/query"
 )
 
-var debug = Debug("net")
+var debug = Debug("api")
 
 type Client struct {
 	client *http.Client // HTTP client used to communicate with the API.
@@ -124,7 +124,6 @@ func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*htt
 			return nil, ctx.Err()
 		default:
 		}
-
 		return nil, err
 	}
 
@@ -133,7 +132,6 @@ func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*htt
 		io.CopyN(ioutil.Discard, resp.Body, 512)
 		resp.Body.Close()
 	}()
-
 	err = CheckResponse(resp)
 	if err != nil {
 		// even though there was an error, we still return the response

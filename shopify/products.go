@@ -2,31 +2,37 @@ package shopify
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"time"
 )
 
 type ProductsService service
 
+type ProductForUpdateContainer struct {
+	Product *Product `json:"product"`
+}
+
 type ProductList struct {
 	Products []*Product `json:"products"`
 }
 type Product struct {
-	BodyHtml       *string    `json:"body_html,omitempty"`
-	CreatedAt      *time.Time `json:"created_at,omitempty"`
-	Handle         *string    `json:"handle,omitempty"`
-	Id             *int       `json:"id,omitempty"`
-	ProductType    *string    `json:"product_type,omitempty"`
-	PublishedAt    *time.Time `json:"published_at,omitempty"`
-	PublishedScope *string    `json:"published_scope,omitempty"`
-	TemplateSuffix *string    `json:"template_suffix,omitempty"`
-	Title          *string    `json:"title,omitempty"`
-	UpdatedAt      *time.Time `json:"updated_at,omitempty"`
-	Vendor         *string    `json:"vendor,omitempty"`
-	Tags           *string    `json:"tags,omitempty"`
-	Variants       []Variant  `json:"variants,omitempty"`
-	Options        []Option   `json:"options,omitempty"`
-	Images         []Image    `json:"images,omitempty"`
+	BodyHtml       *string      `json:"body_html,omitempty"`
+	CreatedAt      *time.Time   `json:"created_at,omitempty"`
+	Handle         *string      `json:"handle,omitempty"`
+	Id             *int         `json:"id,omitempty"`
+	ProductType    *string      `json:"product_type,omitempty"`
+	PublishedAt    *time.Time   `json:"published_at,omitempty"`
+	PublishedScope *string      `json:"published_scope,omitempty"`
+	TemplateSuffix *string      `json:"template_suffix,omitempty"`
+	Title          *string      `json:"title,omitempty"`
+	UpdatedAt      *time.Time   `json:"updated_at,omitempty"`
+	Vendor         *string      `json:"vendor,omitempty"`
+	Tags           *string      `json:"tags,omitempty"`
+	Variants       []*Variant   `json:"variants,omitempty"`
+	Options        []*Option    `json:"options,omitempty"`
+	Images         []*Image     `json:"images,omitempty"`
+	Metafields     []*Metafield `json:"metafields,omitempty"`
 }
 
 type Option struct {
@@ -106,4 +112,21 @@ func (p *ProductsService) List(ctx context.Context, opt *ProductListOptions) ([]
 	}
 
 	return productList.Products, resp, nil
+}
+
+func (p *ProductsService) Edit(ctx context.Context, product *Product) (*http.Response, error) {
+	innerProduct := &ProductForUpdateContainer{Product: product}
+	u := fmt.Sprintf("products/%d.json", *product.Id)
+	req, err := p.client.NewRequest("PUT", u, innerProduct)
+
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := p.client.Do(ctx, req, nil)
+	if err != nil {
+		return resp, err
+	}
+
+	return resp, nil
 }
