@@ -37,6 +37,20 @@ type service struct {
 	client *Client
 }
 
+type resourceCount struct {
+	Count int `json:"count,omitempty"`
+}
+
+// ListOptions specifies the optional parameters to various List methods that
+// support pagination.
+type ListOptions struct {
+	// For paginated result sets, page of results to retrieve.
+	Page int `url:"page,omitempty"`
+
+	// For paginated result sets, the number of results to include per page.
+	Limit int `url:"limit,omitempty"`
+}
+
 func NewPrivateClient(httpClient *http.Client, apiKey string, password string, shopName string) *Client {
 	if httpClient == nil {
 		httpClient = &http.Client{Timeout: time.Second * 20}

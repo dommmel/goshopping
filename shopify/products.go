@@ -92,6 +92,27 @@ type ProductListOptions struct {
 	CreatedAtMax time.Time `url:"created_at_max,omitempty"`
 	UpdatedAtMin time.Time `url:"updated_at_min,omitempty"`
 	UpdatedAtMax time.Time `url:"updated_at_max,omitempty"`
+	ListOptions
+}
+
+func (p *ProductsService) Count(ctx context.Context, opt *ProductListOptions) (int, *http.Response, error) {
+	u := "products/count.json"
+	u, err := addOptionsWithDefaults(u, opt)
+	if err != nil {
+		return 0, nil, err
+	}
+	req, err := p.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return 0, nil, err
+	}
+
+	var count resourceCount
+	resp, err := p.client.Do(ctx, req, &count)
+	if err != nil {
+		return 0, resp, err
+	}
+
+	return count.Count, resp, nil
 }
 
 func (p *ProductsService) List(ctx context.Context, opt *ProductListOptions) ([]*Product, *http.Response, error) {
@@ -112,6 +133,28 @@ func (p *ProductsService) List(ctx context.Context, opt *ProductListOptions) ([]
 	}
 
 	return productList.Products, resp, nil
+}
+
+func (p *ProductsService) AutoPagingList(ctx context.Context, opt *ProductListOptions) ([]*Product, error) {
+	if opt == nil {
+		opt = &ProductListOptions{}
+	}
+	opt.Limit = 250
+	opt.Page = 1
+	products, _, err := p.List(ctx, opt)
+	if len(products) >= 250 {
+		count, _, _ := p.Count(ctx, opt)
+		numPages := count/opt.Limit + 1
+		debug("Number of pages: %d", numPages)
+		for i := 2; i <= numPages; i++ {
+			opt.Page = i
+			pagedProducts, _, err := p.List(ctx, opt)
+			if err == nil {
+				products = append(products, pagedProducts...)
+			}
+		}
+	}
+	return products, err
 }
 
 func (p *ProductsService) Edit(ctx context.Context, product *Product) (*http.Response, error) {

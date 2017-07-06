@@ -21,15 +21,15 @@ func TestListMetafields(t *testing.T) {
 
 }
 
-func TestUpdateMetafields(t *testing.T) {
-	ctx := context.Background()
-	opt := &shopify.MetafieldListOptions{Fields: []string{"id", "key", "value", "namespace"}}
-	metafields, _, err := client.Metafields.ListByProduct(ctx, 117563710, opt)
+// func TestUpdateMetafields(t *testing.T) {
+// 	ctx := context.Background()
+// 	opt := &shopify.MetafieldListOptions{Fields: []string{"id", "key", "value", "namespace"}}
+// 	metafields, _, err := client.Metafields.ListByProduct(ctx, 117563710, opt)
 
-	_, reserr := client.Metafields.UpdateByProduct(ctx, 117563710, metafields)
+// 	_, reserr := client.Products.UpdateByProduct(ctx, 117563710, metafields)
 
-	if reserr != nil {
-		t.Fatalf("Metafields.UpdateByProduct() returned error: %v", err)
-	}
+// 	if reserr != nil {
+// 		t.Fatalf("Metafields.UpdateByProduct() returned error: %v", err)
+// 	}
 
-}
+// }
