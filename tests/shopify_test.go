@@ -7,12 +7,11 @@ import (
 
 	"github.com/davecgh/go-spew/spew"
 	"github.com/dommmel/goshopping/shopify"
-	godebug "github.com/tj/go-debug"
 )
 
 var (
 	client *shopify.Client
-	debug  godebug.DebugFunction
+	//debug  godebug.DebugFunction
 	spit   spew.ConfigState
 )
 
@@ -21,6 +20,6 @@ func init() {
 	password := os.Getenv("SHOPIFY_PASSWORD")
 	shopName := os.Getenv("SHOP_NAME")
 	client = shopify.NewPrivateClient(nil, apiKey, password, shopName)
-	debug = godebug.Debug("response")
+	//debug = godebug.Debug("response")
 	spit = spew.ConfigState{Indent: " ", DisableCapacities: true, DisablePointerAddresses: true}
 }

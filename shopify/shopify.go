@@ -12,12 +12,9 @@ import (
 	"reflect"
 	"time"
 
-	. "github.com/tj/go-debug"
-
 	"github.com/google/go-querystring/query"
 )
 
-var debug = Debug("api")
 
 type Client struct {
 	client *http.Client // HTTP client used to communicate with the API.
@@ -102,7 +99,7 @@ func (c *Client) NewRequest(method, urlStr string, body interface{}) (*http.Requ
 	}
 
 	u := c.BaseURL.ResolveReference(rel)
-	debug("url: %s", u)
+	// debug("url: %s", u)
 
 	var buf io.ReadWriter
 	if body != nil {

@@ -145,7 +145,7 @@ func (p *ProductsService) AutoPagingList(ctx context.Context, opt *ProductListOp
 	if len(products) >= 250 {
 		count, _, _ := p.Count(ctx, opt)
 		numPages := count/opt.Limit + 1
-		debug("Number of pages: %d", numPages)
+		// debug("Number of pages: %d", numPages)
 		for i := 2; i <= numPages; i++ {
 			opt.Page = i
 			pagedProducts, _, err := p.List(ctx, opt)
