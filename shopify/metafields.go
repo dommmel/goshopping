@@ -58,3 +58,15 @@ func (p *MetafieldsService) ListByProduct(ctx context.Context, productId int, op
 
 	return metafieldList.Metafields, resp, nil
 }
+
+// Delete an existing metafield
+func (p *MetafieldsService) Delete(ctx context.Context, metafieldID int) (*http.Response, error) {
+	u := fmt.Sprintf("metafields/%d.json", metafieldID)
+	req, err := p.client.NewRequest("PUT", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := p.client.Do(ctx, req, nil)
+	return resp, err
+}
