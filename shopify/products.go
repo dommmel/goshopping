@@ -17,22 +17,24 @@ type ProductList struct {
 	Products []*Product `json:"products"`
 }
 type Product struct {
-	BodyHtml       *string      `json:"body_html,omitempty"`
-	CreatedAt      *time.Time   `json:"created_at,omitempty"`
-	Handle         *string      `json:"handle,omitempty"`
-	Id             *int         `json:"id,omitempty"`
-	ProductType    *string      `json:"product_type,omitempty"`
-	PublishedAt    *time.Time   `json:"published_at,omitempty"`
-	PublishedScope *string      `json:"published_scope,omitempty"`
-	TemplateSuffix *string      `json:"template_suffix,omitempty"`
-	Title          *string      `json:"title,omitempty"`
-	UpdatedAt      *time.Time   `json:"updated_at,omitempty"`
-	Vendor         *string      `json:"vendor,omitempty"`
-	Tags           *string      `json:"tags,omitempty"`
-	Variants       []*Variant   `json:"variants,omitempty"`
-	Options        []*Option    `json:"options,omitempty"`
-	Images         []*Image     `json:"images,omitempty"`
-	Metafields     []*Metafield `json:"metafields,omitempty"`
+	BodyHtml                       *string      `json:"body_html,omitempty"`
+	CreatedAt                      *time.Time   `json:"created_at,omitempty"`
+	Handle                         *string      `json:"handle,omitempty"`
+	Id                             *int         `json:"id,omitempty"`
+	MetafieldsGlobalTitleTag       *string      `json:"metafields_global_title_tag,omitempty"`
+	MetafieldsGlobalDescriptionTag *string      `json:"metafields_global_description_tag,omitempty"`
+	ProductType                    *string      `json:"product_type,omitempty"`
+	PublishedAt                    *time.Time   `json:"published_at,omitempty"`
+	PublishedScope                 *string      `json:"published_scope,omitempty"`
+	TemplateSuffix                 *string      `json:"template_suffix,omitempty"`
+	Title                          *string      `json:"title,omitempty"`
+	UpdatedAt                      *time.Time   `json:"updated_at,omitempty"`
+	Vendor                         *string      `json:"vendor,omitempty"`
+	Tags                           *string      `json:"tags,omitempty"`
+	Variants                       []*Variant   `json:"variants,omitempty"`
+	Options                        []*Option    `json:"options,omitempty"`
+	Images                         []*Image     `json:"images,omitempty"`
+	Metafields                     []*Metafield `json:"metafields,omitempty"`
 }
 
 type Option struct {
